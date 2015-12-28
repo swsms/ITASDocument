@@ -18,11 +18,11 @@ public class ObjectEntity {
     private Date dateCreated;
 
 //
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-    @Column(name = "user_id")
-    private long creater;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity creater;
 
+    //@Column(name = "user_id")
 
 
     public ObjectEntity() {

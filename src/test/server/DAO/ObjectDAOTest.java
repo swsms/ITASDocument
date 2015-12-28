@@ -52,8 +52,4 @@ public class ObjectDAOTest {
         assertTrue(objectEntity == null);
     }
 
-    @Test
-    public void testInsertObject() throws Exception {
-
-    }
 }
