@@ -25,7 +25,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        Configuration configuration = Configurations.getPostGresConfigurationLocal();
+        Configuration configuration = Configurations.getPostGresConfigurationRemote();
 
         SessionFactory sessionFactory = createSessionFactory(configuration);
         UserService service = new UserServiceImpl(sessionFactory);
