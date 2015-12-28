@@ -2,13 +2,12 @@ package server.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * Created by Артем on 28.12.2015.
  */
 @Entity
-@Table(name = "app_user")
+@Table(name = "users")
 public class UserEntity implements Serializable {
     private static final long serialVersionUID = -8706689714326132798L;
 
@@ -25,11 +24,19 @@ public class UserEntity implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email", unique = true)
-    private String email;
+//    //@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "app_user")
+//    private Set<RoleEntity> roles;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "app_user")
-    private Set<RoleEntity> roles;
+    public UserEntity() {
+        this.id = -1L;
+    }
+
+    public UserEntity(String name, String login, String password) {
+        this();
+        this.name = name;
+        this.login = login;
+        this.password = password;
+    }
 
     public long getId() {
         return id;
@@ -63,8 +70,11 @@ public class UserEntity implements Serializable {
         this.password = password;
     }
 
-    public Set<RoleEntity> roles(){
-        return roles;
+    public boolean isCreated() {
+        return id != -1;
     }
+//    public Set<RoleEntity> roles(){
+//        return roles;
+//    }
 }
 

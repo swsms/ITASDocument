@@ -9,7 +9,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import server.services.UserService;
 import server.services.UserServiceImpl;
-import server.servlets.LoginServlet;
+import server.servlets.SignInServlet;
+import server.servlets.SignUpServlet;
 
 /**
  * Created by Артем on 28.12.2015.
@@ -33,16 +34,14 @@ public class Main {
         UserService service = new UserServiceImpl(sessionFactory);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(new LoginServlet(service)), "/login");
+        context.addServlet(new ServletHolder(new SignInServlet(service)), "/signin");
+        context.addServlet(new ServletHolder(new SignUpServlet(service)), "/signup");
 
         Server server = new Server(8080);
         server.setHandler(context);
 
         server.start();
 
-        System.out.println("Server started");
-
         server.join();
-
     }
 }
