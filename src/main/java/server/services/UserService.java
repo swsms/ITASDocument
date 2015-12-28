@@ -11,5 +11,7 @@ public interface UserService {
 
     UserEntity loginFromSession();
 
+    Long register(String name, String login, String password);
+
     void logout();
 }

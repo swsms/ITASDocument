@@ -29,8 +29,9 @@ public class UserDAO {
                 .uniqueResult());
     }
 
-    public long insertUser(UserEntity user) throws HibernateException {
-        return (Long) session.save(user);
+    public long insertUser(String name, String login, String password) throws HibernateException {
+        UserEntity userEntity = new UserEntity(name, login, password);
+        return (Long) session.save(userEntity);
     }
 
 }

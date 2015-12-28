@@ -3,11 +3,12 @@ package server.services;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import server.DAO.UserDAO;
 import server.entities.UserEntity;
 
 /**
- * Created by Артем on 28.12.2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅ on 28.12.2015.
  */
 public class UserServiceImpl implements UserService {
     private final SessionFactory sessionFactory;
@@ -29,6 +30,25 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         } finally {
             return userEntity;
+        }
+    }
+
+    @Override
+    public Long register(String name, String login, String password) {
+        Long id = -1L;
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            UserDAO dao = new UserDAO(session);
+
+            id = dao.insertUser(name, login, password);
+
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            return id;
         }
     }
 
