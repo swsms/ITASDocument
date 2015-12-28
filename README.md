@@ -1,4 +1,4 @@
 # ITASDocument
 Simple document warehouse.
 
-Educational project in university.
+Educational project in PNRPU.
