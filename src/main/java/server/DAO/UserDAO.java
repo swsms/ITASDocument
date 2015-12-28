@@ -6,9 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import server.entities.UserEntity;
 
-/**
- * Created by Артем on 28.12.2015.
- */
 public class UserDAO {
 
     private Session session;

@@ -1,80 +1,85 @@
 package server.entities;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-/**
- * Created by Артем on 28.12.2015.
- */
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 @Entity
 @Table(name = "users")
 public class UserEntity implements Serializable {
-    private static final long serialVersionUID = -8706689714326132798L;
+	private static final long serialVersionUID = -8706689714326132798L;
 
-    @Id
-    @GeneratedValue
-    private Long id;
+	@Id
+	@GeneratedValue
+	private Long id;
 
-    @Column(name = "name")
-    private String name;
+	@Column(name = "name")
+	private String name;
 
-    @Column(name = "login", unique = true)
-    private String login;
+	@Column(name = "login", unique = true)
+	private String login;
 
-    @Column(name = "password")
-    private String password;
+	@Column(name = "password")
+	private String password;
 
-//    //@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "app_user")
-//    private Set<RoleEntity> roles;
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	@JoinTable(name = "user_group", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
+	private Set<RoleEntity> roles;
 
-    public UserEntity() {
-        this.id = -1L;
-    }
+	public UserEntity() {
+	}
 
-    public UserEntity(String name, String login, String password) {
-        this();
-        this.name = name;
-        this.login = login;
-        this.password = password;
-    }
+	public UserEntity(String name, String login, String password) {
+		this.name = name;
+		this.login = login;
+		this.password = password;
+	}
 
-    public long getId() {
-        return id;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getLogin() {
-        return login;
-    }
+	public String getLogin() {
+		return login;
+	}
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
+	public void setLogin(String login) {
+		this.login = login;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public boolean isCreated() {
-        return id != -1;
-    }
-//    public Set<RoleEntity> roles(){
-//        return roles;
-//    }
+	public Set<RoleEntity> roles() {
+		if (roles == null)
+			roles = new HashSet<RoleEntity>();
+		return roles;
+	}
 }
-

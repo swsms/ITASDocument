@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by Артем on 28.12.2015.
- */
+
 public class SignInServlet extends HttpServlet {
     private final UserService userService;
 
