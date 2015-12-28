@@ -3,9 +3,6 @@ package server.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Created by Артем on 28.12.2015.
- */
 @Entity
 @Table(name = "users")
 public class UserEntity implements Serializable {

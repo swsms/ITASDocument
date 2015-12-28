@@ -12,11 +12,8 @@ import server.services.UserServiceImpl;
 import server.servlets.SignInServlet;
 import server.servlets.SignUpServlet;
 
-/**
- * Created by Артем on 28.12.2015.
- */
-public class Main {
 
+public class Main {
 
     private static SessionFactory createSessionFactory(Configuration configuration) {
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();

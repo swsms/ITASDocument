@@ -3,9 +3,6 @@ package server.main;
 import org.hibernate.cfg.Configuration;
 import server.entities.UserEntity;
 
-/**
- * Created by Артем on 28.12.2015.
- */
 public class Configurations {
     private static final String hibernate_show_sql = "true";
     private static final String hibernate_hbm2ddl_auto = "validate";

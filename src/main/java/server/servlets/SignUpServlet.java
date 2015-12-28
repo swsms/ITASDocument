@@ -8,9 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by ����� on 28.12.2015.
- */
+
 public class SignUpServlet extends HttpServlet {
     private final UserService userService;
 

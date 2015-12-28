@@ -7,9 +7,7 @@ import org.hibernate.Transaction;
 import server.DAO.UserDAO;
 import server.entities.UserEntity;
 
-/**
- * Created by ����� on 28.12.2015.
- */
+
 public class UserServiceImpl implements UserService {
     private final SessionFactory sessionFactory;
 
