@@ -44,7 +44,7 @@ public class ObjectDAOTest {
     }
 
     @Test
-    public void getNotExistingObject() throws Exception {
+    public void getNonExistingObject() throws Exception {
         ObjectDAO objectDAO = new ObjectDAO(session);
 
         Long id = -100L;
