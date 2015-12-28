@@ -1,7 +1,10 @@
 package server.main;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-
+import org.hibernate.service.ServiceRegistry;
+import server.entities.ObjectEntity;
 import server.entities.RoleEntity;
 import server.entities.UserEntity;
 
@@ -51,8 +54,18 @@ public class Configurations {
 
 		configuration.addAnnotatedClass(UserEntity.class);
 		configuration.addAnnotatedClass(RoleEntity.class);
+		configuration.addAnnotatedClass(ObjectEntity.class);
 
 		return configuration;
+	}
+
+	public static SessionFactory createSessionFactory(Configuration configuration) {
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+		builder.applySettings(configuration.getProperties());
+
+		ServiceRegistry serviceRegistry = builder.build();
+
+		return configuration.buildSessionFactory(serviceRegistry);
 	}
 
 }

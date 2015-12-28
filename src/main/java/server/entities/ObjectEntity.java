@@ -3,6 +3,8 @@ package server.entities;
 import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "system_object")
 public class ObjectEntity {
     @Id
     @GeneratedValue
@@ -15,7 +17,31 @@ public class ObjectEntity {
     @Temporal(value = TemporalType.DATE)
     private Date dateCreated;
 
-    public ObjectEntity() { }
+//
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+    @Column(name = "user_id")
+    private long creater;
+
+
+
+    public ObjectEntity() {
+
+    }
+
+    public ObjectEntity(String name, Date dateCreated, UserEntity creater) {
+        this.name = name;
+        this.dateCreated = dateCreated;
+//        this.creater = creater;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 
 }
