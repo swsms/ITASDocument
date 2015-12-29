@@ -4,10 +4,8 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import server.entities.ObjectEntity;
-import server.entities.UserEntity;
 import server.utils.GenericProcessor;
 
-import java.util.Date;
 import java.util.List;
 
 public class ObjectDAO {
@@ -45,10 +43,20 @@ public class ObjectDAO {
         }
     }
 
-    public long insertObject(String name, Date dateCreated, UserEntity creator)
+    public <T extends ObjectEntity> long insertObject(T objectEntity)
             throws HibernateException {
-
-        ObjectEntity objectEntity = new ObjectEntity(name, dateCreated, creator);
         return (Long) session.save(objectEntity);
     }
+
+    public <T extends ObjectEntity> void removeObject(T objectEntity)
+            throws HibernateException {
+        session.delete(objectEntity);
+    }
+
+//    public long insertObject(String name, Date dateCreated, UserEntity creator)
+//            throws HibernateException {
+//
+//        ObjectEntity objectEntity = new ObjectEntity(name, dateCreated, creator);
+//        return (Long) session.save(objectEntity);
+//    }
 }

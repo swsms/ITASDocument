@@ -6,8 +6,9 @@ import javax.persistence.*;
 @Table(name = "documents")
 public class DocumentEntity extends ObjectEntity {
 
-    @Column(name = "document_type_id")
-    private Long typeId;
+    @ManyToOne
+    @JoinColumn(name = "document_type_id")
+    private DocumentTypeEntity type;
 
     @Column(name = "ident")
     private String ident;

@@ -1,0 +1,58 @@
+﻿<html>
+	<head>
+		<meta charset="utf-8">
+		<link href="jquery/jquery-ui.css" rel="stylesheet">
+		<title>&#9762;&#9773;&#9762;&#9773;&#9762;&#9773;&#9762;&#9773;&#9762;&#9773;&#9762;&#9773;&#9762;&#9773;</title>
+		<style>
+			#section{
+				width:200px;
+			}
+		</style>
+		<script src="jquery/jquery.js"></script>
+		<script src="jquery/jquery-ui.js"></script>
+		<script>
+			(function(){
+				function getSections() {
+					
+					var sections = ["Раздел 1", "Раздел 2", "Раздел 3"];
+					buildSections(sections);
+				};
+			
+				function buildSections(array){
+					var html="";
+					for(var i in array)
+					{
+						html+="<option value='"+array[i]+"'>"+array[i]+"</option>";
+					}
+					$("#section").html(html);
+					
+					if(array.length > 0)
+						getDocuments(array[0]);
+				};	
+				
+				function onSectionChange(){
+					getDocuments($("#section").val());
+				};
+				
+				function getDocuments(section){
+					
+				};
+			
+				function buildDocumentsTable(documents){
+					
+				};
+				
+				$(document).ready(function(){
+					getSections();
+					$("#section").on("change", onSectionChange);
+					
+				});
+			})();
+		</script>
+	</head>
+	<body>
+		<label for="section">Выберите раздел</label>
+	    <select name="section" id="section"></select>
+		<table id="documents"></table>
+	</body>
+</html>

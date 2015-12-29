@@ -6,7 +6,7 @@ import java.util.Date;
 @Entity
 @Table(name = "objects")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class ObjectEntity {
+public abstract class ObjectEntity {
     @Id
     @GeneratedValue
     private Long id;

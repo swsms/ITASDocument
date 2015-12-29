@@ -4,14 +4,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import server.entities.DocumentEntity;
-import server.entities.ObjectEntity;
-import server.entities.RoleEntity;
-import server.entities.UserEntity;
+import server.entities.*;
 
 public class Configurations {
 	private static final String hibernate_show_sql = "true";
-	private static final String hibernate_hbm2ddl_auto = "validate";
+	private static final String hibernate_hbm2ddl_auto = "create";
 
 	public static Configuration getPostGresConfigurationRemote() {
 		Configuration configuration = getBaseConfiguration();
@@ -56,6 +53,7 @@ public class Configurations {
 		configuration.addAnnotatedClass(RoleEntity.class);
 		configuration.addAnnotatedClass(ObjectEntity.class);
 		configuration.addAnnotatedClass(DocumentEntity.class);
+		configuration.addAnnotatedClass(DocumentTypeEntity.class);
 
 		return configuration;
 	}
