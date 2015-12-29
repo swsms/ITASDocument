@@ -10,12 +10,11 @@ import server.services.UserServiceImpl;
 import server.servlets.SignInServlet;
 import server.servlets.SignUpServlet;
 
-
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        Configuration configuration = Configurations.getPostGresConfigurationRemote();
+        Configuration configuration = Configurations.getPostGresConfigurationLocal();
 
         SessionFactory sessionFactory = Configurations.createSessionFactory(configuration);
         UserService service = new UserServiceImpl(sessionFactory);
