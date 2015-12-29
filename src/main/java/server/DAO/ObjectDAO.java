@@ -23,7 +23,7 @@ public class ObjectDAO {
     }
 
     public <T extends ObjectEntity> T getOne(Class<T> clazz, long id)
-            throws HibernateException  {
+            throws HibernateException {
         try {
             Object result = session.get(clazz, id);
             return GenericProcessor.makeGeneric(result, clazz);
@@ -33,9 +33,8 @@ public class ObjectDAO {
         }
     }
 
-
-
-    public <T extends ObjectEntity> List<T> getAll(Class<T> clazz) throws HibernateException  {
+    public <T extends ObjectEntity> List<T> getAll(Class<T> clazz)
+            throws HibernateException  {
         try {
             Criteria criteria = session.createCriteria(clazz);
             List result = criteria.list();
@@ -46,8 +45,10 @@ public class ObjectDAO {
         }
     }
 
-    public long insertObject(String name, Date dateCreated, UserEntity creater) throws HibernateException {
-        ObjectEntity objectEntity = new ObjectEntity(name, dateCreated, creater);
+    public long insertObject(String name, Date dateCreated, UserEntity creator)
+            throws HibernateException {
+
+        ObjectEntity objectEntity = new ObjectEntity(name, dateCreated, creator);
         return (Long) session.save(objectEntity);
     }
 }

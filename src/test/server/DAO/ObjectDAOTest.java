@@ -11,9 +11,10 @@ import server.entities.DocumentEntity;
 import server.entities.ObjectEntity;
 import server.main.Configurations;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 
 public class ObjectDAOTest {
     private static SessionFactory sessionFactory;
@@ -62,5 +63,14 @@ public class ObjectDAOTest {
 
         assertTrue(documentEntity != null);
         assertEquals(id, documentEntity.getId());
+    }
+
+    @Test
+    public void getAllDocuments() throws Exception {
+        ObjectDAO objectDAO = new ObjectDAO(session);
+
+        List<DocumentEntity> documents = objectDAO.getAll(DocumentEntity.class);
+
+        assertTrue(documents.size() > 0);
     }
 }
