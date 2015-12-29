@@ -5,7 +5,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import server.PasswordEncoder;
+import server.utils.PasswordEncoder;
 import server.entities.UserEntity;
 
 public class UserDAO {

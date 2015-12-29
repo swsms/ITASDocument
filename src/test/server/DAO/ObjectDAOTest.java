@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import server.entities.DocumentEntity;
 import server.entities.ObjectEntity;
 import server.main.Configurations;
 
@@ -52,4 +53,14 @@ public class ObjectDAOTest {
         assertTrue(objectEntity == null);
     }
 
+    @Test
+    public void getOneDocument() throws Exception {
+        ObjectDAO objectDAO = new ObjectDAO(session);
+
+        Long id = 1L;
+        DocumentEntity documentEntity = objectDAO.getOne(DocumentEntity.class, id);
+
+        assertTrue(documentEntity != null);
+        assertEquals(id, documentEntity.getId());
+    }
 }

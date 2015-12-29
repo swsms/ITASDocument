@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "system_object")
+@Table(name = "objects")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class ObjectEntity {
     @Id
     @GeneratedValue
@@ -17,22 +18,19 @@ public class ObjectEntity {
     @Temporal(value = TemporalType.DATE)
     private Date dateCreated;
 
-//
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserEntity creater;
-
-    //@Column(name = "user_id")
+    private UserEntity creator;
 
 
     public ObjectEntity() {
 
     }
 
-    public ObjectEntity(String name, Date dateCreated, UserEntity creater) {
+    public ObjectEntity(String name, Date dateCreated, UserEntity creator) {
         this.name = name;
         this.dateCreated = dateCreated;
-//        this.creater = creater;
+        this.creator = creator;
     }
 
     public Long getId() {
@@ -41,6 +39,30 @@ public class ObjectEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public UserEntity getCreator() {
+        return creator;
+    }
+
+    public void setCreator(UserEntity userEntity) {
+        this.creator = userEntity;
     }
 
 

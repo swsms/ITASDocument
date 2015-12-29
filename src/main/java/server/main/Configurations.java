@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import server.entities.DocumentEntity;
 import server.entities.ObjectEntity;
 import server.entities.RoleEntity;
 import server.entities.UserEntity;
@@ -43,8 +44,7 @@ public class Configurations {
 		configuration.setProperty("hibernate.connection.username", "postgres");
 		configuration.setProperty("hibernate.connection.password", "q");
 		configuration.setProperty("hibernate.show_sql", hibernate_show_sql);
-		configuration.setProperty("hibernate.hbm2ddl.auto",
-				hibernate_hbm2ddl_auto);
+		configuration.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
 
 		return configuration;
 	}
@@ -55,6 +55,7 @@ public class Configurations {
 		configuration.addAnnotatedClass(UserEntity.class);
 		configuration.addAnnotatedClass(RoleEntity.class);
 		configuration.addAnnotatedClass(ObjectEntity.class);
+		configuration.addAnnotatedClass(DocumentEntity.class);
 
 		return configuration;
 	}
