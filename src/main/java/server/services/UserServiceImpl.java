@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
     @Override
     public Long register(String name, String login, String password) {
         Long id = -1L;
