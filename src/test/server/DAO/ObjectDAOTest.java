@@ -73,4 +73,9 @@ public class ObjectDAOTest {
 
         assertTrue(documents.size() > 0);
     }
+
+
+    public void getAllDocumentsType() throws Exception {
+
+    }
 }
