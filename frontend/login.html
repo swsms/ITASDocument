@@ -39,7 +39,11 @@
 							alert("Error!");
 					});
 				};
-				
+
+				function onToRegBtnClick(){
+					window.location.href="/registration.html";
+				};
+
 				function onLoginBtnClick(){
 					var login = $("#login").val();
 					var password = $("#password").val();
@@ -51,7 +55,8 @@
 				
 				$(document).ready(function(){
 					$("#loginBtn").on("click", onLoginBtnClick);
-										
+					$("#toRegBtn").on("click", onToRegBtnClick);
+
 					$(document).on("keypress", function(){
 						if(event.charCode === 13 && event.srcElement.id != "loginBtn")
 							onLoginBtnClick();
@@ -65,6 +70,7 @@
 			<input id="login" type="text" placeholder="Введите логин" />
 			<input id="password" type="password" placeholder="Введите пароль" />
 			<input id="loginBtn" type="button" value="Вход" />
+			<input id="toRegBtn" type="button" value="Зарегаться!" />
 		</div>
 	</body>
 </html>

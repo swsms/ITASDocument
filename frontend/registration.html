@@ -22,7 +22,7 @@
     <script src="jquery/jquery-ui.js"></script>
     <script>
 			(function(){
-				function sendLoginRequest(login, password){
+				function sendRegRequest(login, password, name){
 					$.ajax({
 						type: "POST",
 						url: "/signup?login="+login+"&password="+password+"&name="+name,
@@ -40,21 +40,27 @@
 					});
 				};
 				
-				function onLoginBtnClick(){
+				function onToLoginBtnClick(){
+					window.location.href="/login.html";
+				};
+
+				function onRegBtnClick(){
 					var login = $("#login").val();
 					var password = $("#password").val();
-					if (login != "" && password != "")
+					var name = $("#name").val();
+					if (login != "" && password != "" && name != "")
 					{
-						sendLoginRequest(login, password);
+						sendRegRequest(login, password, name);
 					}
 				};
 				
 				$(document).ready(function(){
-					$("#regBtn").on("click", onLoginBtnClick);
+					$("#regBtn").on("click", onRegBtnClick);
+					$("#toLoginBtn").on("click", onToLoginBtnClick);
 										
 					$(document).on("keypress", function(){
-						if(event.charCode === 13 && event.srcElement.id != "loginBtn")
-							onLoginBtnClick();
+						if(event.charCode === 13 && event.srcElement.id != "regBtn")
+							onRegBtnClick();
 					});
 				});
 			})();
@@ -65,7 +71,8 @@
     <input id="name" type="text" placeholder="Ваше имя" />
     <input id="login" type="text" placeholder="Введите логин" />
     <input id="password" type="password" placeholder="Введите пароль" />
-    <input id="regBtn" type="button" value="Да" />
+    <input id="regBtn" type="button" value="Зарегать!" />
+	<input id="toLoginBtn" type="button" value="Уходим!" />
 </div>
 </body>
 </html>
