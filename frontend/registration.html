@@ -1,0 +1,71 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="jquery/jquery-ui.css" rel="stylesheet">
+    <title>&#9773;&#9762;&#9773;&#9762;&#9773;&#9762;&#9773;&#9762;&#9773;&#9762;&#9773;&#9762;&#9773;&#9762;</title>
+    <style>
+        .container{
+        width:200px;
+        margin: auto;
+        margin-top: 150px;
+        padding: 50px;
+        border-radius: 5px;
+        background-color: lightgrey;
+        }
+
+        input{
+        width: 200px;
+        margin: 5px;
+        }
+    </style>
+    <script src="jquery/jquery.js"></script>
+    <script src="jquery/jquery-ui.js"></script>
+    <script>
+			(function(){
+				function sendLoginRequest(login, password){
+					$.ajax({
+						type: "POST",
+						url: "/signup?login="+login+"&password="+password+"&name="+name,
+						statusCode:{
+							201: function(response){
+								window.location.href="/login.html";
+							},
+							400: function(response){
+								alert(response.responseText);
+							}
+						}
+					}).error(function(response){
+						if(response.status != 401)
+							alert("Error!");
+					});
+				};
+				
+				function onLoginBtnClick(){
+					var login = $("#login").val();
+					var password = $("#password").val();
+					if (login != "" && password != "")
+					{
+						sendLoginRequest(login, password);
+					}
+				};
+				
+				$(document).ready(function(){
+					$("#regBtn").on("click", onLoginBtnClick);
+										
+					$(document).on("keypress", function(){
+						if(event.charCode === 13 && event.srcElement.id != "loginBtn")
+							onLoginBtnClick();
+					});
+				});
+			})();
+		</script>
+</head>
+<body>
+<div class="container">
+    <input id="name" type="text" placeholder="Ваше имя" />
+    <input id="login" type="text" placeholder="Введите логин" />
+    <input id="password" type="password" placeholder="Введите пароль" />
+    <input id="regBtn" type="button" value="Да" />
+</div>
+</body>
+</html>

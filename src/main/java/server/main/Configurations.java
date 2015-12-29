@@ -8,7 +8,7 @@ import server.entities.*;
 
 public class Configurations {
 	private static final String hibernate_show_sql = "true";
-	private static final String hibernate_hbm2ddl_auto = "create";
+	private static final String hibernate_hbm2ddl_auto = "validate";
 
 	public static Configuration getPostGresConfigurationRemote() {
 		Configuration configuration = getBaseConfiguration();
