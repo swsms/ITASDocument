@@ -17,6 +17,23 @@
   <script src="jquery/jquery-ui.js"></script>
   <script>
       (function() {
+        function checkLogin(){
+            $.ajax({
+            async: false,
+            type: "POST",
+			url: "/documents",
+			statusCode:{
+			    401: function(response){
+			        window.location.href="./login.html";
+			    }
+			}
+			}).error(function(response){
+				if(response.status != 401)
+				alert("Error!");
+			});
+		};
+
+
         function getSections() {
           var sections = (function() {
             var json = [];
@@ -58,7 +75,6 @@
         function onSearchBtnClick() {
           var content = $("#section").val();
           var text = $("#searchField").val();
-
           var searchDocuments = (function() {
             var json = [];
             $.ajax({
@@ -116,6 +132,8 @@
           $("#searchBtn").on("click", onSearchBtnClick);
           $("#section").on("change", onSectionChange);
         });
+
+        checkLogin();
       })();
 
     </script>

@@ -46,7 +46,7 @@ public class Main {
 				"/signout");
 
 		context.addServlet(
-				new ServletHolder(new DocumentServlet(documService)),
+				new ServletHolder(new DocumentServlet(documService, userService)),
 				"/documents");
 		context.addServlet(new ServletHolder(new TypeServlet(typeService)),
 				"/types");

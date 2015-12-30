@@ -1,5 +1,6 @@
 package server.servlets;
 
+import server.entities.UserEntity;
 import server.services.UserService;
 
 import javax.servlet.ServletException;
@@ -18,6 +19,19 @@ public class SignOutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        resp.sendRedirect("login.html");
+
+        String sessionId = req.getSession().getId();
+        UserEntity profile = userService.getUserBySessionId(sessionId);
+
+        if (profile == null) {
+            resp.setContentType("text/html;charset=utf-8");
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        } else {
+            userService.deleteSession(sessionId);
+
+            resp.sendRedirect("login.html");
+            resp.setContentType("text/html;charset=utf-8");
+            resp.setStatus(HttpServletResponse.SC_OK);
+        }
     }
 }

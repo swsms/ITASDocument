@@ -24,19 +24,35 @@ public class SignInServlet extends HttpServlet {
 
         UserEntity profile = userService.login(login, pass);
 
-        if (profile == null) {
-            resp.getWriter().println("Unauthorized");
+        if (profile != null) {
+            userService.addSession(req.getSession().getId(), profile);
+
+            resp.sendRedirect("documents.html");
             resp.setContentType("text/html;charset=utf-8");
-            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            resp.setStatus(HttpServletResponse.SC_OK);
         } else {
             resp.setContentType("text/html;charset=utf-8");
-            resp.getWriter().println("Authorized");
-            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
+        System.out.println("YEAH!");
+
+        String sessionId = req.getSession().getId();
+        UserEntity profile = userService.getUserBySessionId(sessionId);
+
+        if (profile == null) {
+            resp.setContentType("text/html;charset=utf-8");
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        } else {
+            resp.setContentType("text/html;charset=utf-8");
+            resp.setStatus(HttpServletResponse.SC_OK);
+        }
     }
 }
+
+
