@@ -7,9 +7,12 @@ public interface UserService {
 
     UserEntity login(String login, String password);
 
-    UserEntity loginFromSession();
-
     Long register(String name, String login, String password);
 
-    void logout();
+
+//    UserEntity getUserBySessionId(String sessionId);
+//
+//    void addSession(String sessionId, UserEntity profile);
+//
+//    void deleteSession(String sessioId);
 }

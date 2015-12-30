@@ -1,38 +1,35 @@
 package server.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import server.entities.DocumentEntity;
-import server.services.DocumentService;
+import server.entities.DocumentTypeEntity;
+import server.services.TypeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 import java.util.List;
 
-public class DocumentServlet extends HttpServlet {
+public class TypeServlet extends HttpServlet {
 
-    private final DocumentService documentService;
+    private final TypeService typeService;
 
-    public DocumentServlet(DocumentService documentService) {
-        this.documentService = documentService;
+    public TypeServlet(TypeService typeService) {
+        this.typeService = typeService;
     }
 
     @Override
     protected void doGet(HttpServletRequest req,
                          HttpServletResponse resp) throws ServletException, IOException {
 
-        String type = req.getParameter("type");
-
-        List<DocumentEntity> documents = documentService.getDocumentsByTypeName(type);
+        List<DocumentTypeEntity> types = typeService.getAllDocumentTypes();
 
         ObjectMapper mapper = new ObjectMapper();
-        String documentsJson = mapper.writeValueAsString(documents);
+        String typesJson = mapper.writeValueAsString(types);
 
         resp.setContentType("application/json;charset=utf-8");
-        resp.getWriter().println(documentsJson);
+        resp.getWriter().println(typesJson);
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setCharacterEncoding("utf-8");
     }

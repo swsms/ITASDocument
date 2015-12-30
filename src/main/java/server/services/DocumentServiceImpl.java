@@ -12,6 +12,7 @@ import java.util.List;
 
 public class DocumentServiceImpl implements DocumentService {
 
+
     private final SessionFactory sessionFactory;
 
     public DocumentServiceImpl(SessionFactory sessionFactory) {

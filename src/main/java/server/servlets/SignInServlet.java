@@ -4,14 +4,13 @@ import server.entities.UserEntity;
 import server.services.UserService;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 
 public class SignInServlet extends HttpServlet {
     private final UserService userService;
+    private final String USER_SESSION_ATTRIBUTE = "USER";
 
     public SignInServlet(UserService service) {
         this.userService = service;
@@ -31,12 +30,14 @@ public class SignInServlet extends HttpServlet {
             resp.setContentType("text/html;charset=utf-8");
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } else {
-            //  userService.addSession(request.getSession().getId(), profile);
-
             resp.setContentType("text/html;charset=utf-8");
             resp.getWriter().println("Authorized");
             resp.setStatus(HttpServletResponse.SC_OK);
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
 }
