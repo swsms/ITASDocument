@@ -56,13 +56,15 @@
         };
 
         function onSearchBtnClick() {
+          var content = $("#section").val();
           var text = $("#searchField").val();
+
           var searchDocuments = (function() {
             var json = [];
             $.ajax({
               'async': false,
               'global': false,
-              'url': "/search?text=" + text,
+              'url': "/documents?type=" + content + "&content=" + text,
               'dataType': "json",
               'success': function(jsonDocs) {
                 for (var i in jsonDocs)
@@ -76,7 +78,8 @@
         };
 
         function getDocuments(section) {
-          $.getJSON("/documents?type=" + section, function(jsonDocuments) {
+          var text = $("#searchField").val();
+          $.getJSON("/documents?type=" + section + "&content=" + text, function(jsonDocuments) {
             buildDocumentsTable(jsonDocuments);
           });
         };

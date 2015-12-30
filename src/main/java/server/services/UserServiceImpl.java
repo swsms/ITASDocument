@@ -7,12 +7,18 @@ import org.hibernate.Transaction;
 import server.DAO.UserDAO;
 import server.entities.UserEntity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class UserServiceImpl implements UserService {
     private final SessionFactory sessionFactory;
+    private final Map<String, UserEntity> sessionIdToProfile;
+
 
     public UserServiceImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+        this.sessionIdToProfile = new HashMap<>();
     }
 
     public UserEntity login(String login, String password) {
@@ -30,7 +36,6 @@ public class UserServiceImpl implements UserService {
             return userEntity;
         }
     }
-
 
     @Override
     public Long register(String name, String login, String password) {
@@ -51,11 +56,19 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public UserEntity loginFromSession() {
-        return null;
+    @Override
+    public UserEntity getUserBySessionId(String sessionId) {
+        return sessionIdToProfile.get(sessionId);
     }
 
-    public void logout() {
-
+    @Override
+    public void addSession(String sessionId, UserEntity profile) {
+        sessionIdToProfile.put(sessionId, profile);
     }
+
+    @Override
+    public void deleteSession(String sessionId) {
+        sessionIdToProfile.remove(sessionId);
+    }
+
 }

@@ -9,10 +9,9 @@ public interface UserService {
 
     Long register(String name, String login, String password);
 
+    UserEntity getUserBySessionId(String sessionId);
 
-//    UserEntity getUserBySessionId(String sessionId);
-//
-//    void addSession(String sessionId, UserEntity profile);
-//
-//    void deleteSession(String sessioId);
+    void addSession(String sessionId, UserEntity profile);
+
+    void deleteSession(String sessionId);
 }

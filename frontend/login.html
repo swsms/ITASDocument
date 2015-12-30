@@ -1,121 +1,76 @@
 ﻿<html>
+	<head>
+		<meta charset="utf-8">
+		<link href="jquery/jquery-ui.css" rel="stylesheet">
+		<title>Логин</title>
+		<style>
+			.container{
+				width:200px;
+				margin: auto;
+				margin-top: 150px;
+				padding: 50px;
+				border-radius: 5px;
+				background-color: lightgrey;
+			}
 
-<head>
-	<meta charset="utf-8">
-	<link href="jquery/jquery-ui.css" rel="stylesheet">
-	<style>
-		#section {
-		width: 200px;
-		}
+			input{
+				width: 200px;
+				margin: 5px;
+			}
+		</style>
+		<script src="jquery/jquery.js"></script>
+		<script src="jquery/jquery-ui.js"></script>
+		<script>
+			(function(){
+				function sendLoginRequest(login, password){
+					$.ajax({
+						type: "POST",
+						url: "/signin?login="+login+"&password="+password,
+						statusCode:{
+							200: function(response){
+								window.location.href="./documents.html";
+							},
+							401: function(response){
+								alert(response.responseText);
+							}
+						}
+					}).error(function(response){
+						if(response.status != 401)
+							alert("Error!");
+					});
+				};
 
-		.Search {
-		display: block;
-		}
+				function onToRegBtnClick(){
+					window.location.href="/registration.html";
+				};
 
-	</style>
-	<script src="jquery/jquery.js"></script>
-	<script src="jquery/jquery-ui.js"></script>
-	<script>
-      (function() {
-        function getSections() {
-          var sections = (function() {
-            var json = [];
-            $.ajax({
-              'async': false,
-              'global': false,
-              'url': "/types",
-              'dataType': "json",
-              'success': function(jsonTypes) {
-                for (var i in jsonTypes)
-                  json.push(jsonTypes[i].name);
-              }
-            });
-            return json;
-          })();
+				function onLoginBtnClick(){
+					var login = $("#login").val();
+					var password = $("#password").val();
+					if (login != "" && password != "")
+					{
+						sendLoginRequest(login, password);
+					}
+				};
 
-          buildSections(sections);
-        };
+				$(document).ready(function(){
+					$("#loginBtn").on("click", onLoginBtnClick);
+					$("#toRegBtn").on("click", onToRegBtnClick);
 
-        function buildSections(array) {
-          var html = "";
-          for (var i in array) {
-            html += "<option value='" + array[i] + "'>" + array[i] + "</option>";
-          }
-          $("#section").html(html);
-
-          if (array.length > 0)
-            getDocuments(array[0]);
-        };
-
-        function onSectionChange() {
-          getDocuments($("#section").val());
-        };
-
-        function onAddDocumentBtnClick() {
-          alert("Add");
-        };
-
-        function onSearchBtnClick() {
-          var text = $("#searchField").val();
-          alert("search: " + text);
-        };
-
-        function getDocuments(section) {
-
-          $.getJSON("/documents?type=" + section, function(jsonDocuments) {
-            buildDocumentsTable(jsonDocuments);
-          });
-
-        };
-
-        function buildTableHeader() {
-          var tableHead = "";
-          var columns = ["Название", "Дата добавления", "Пользователь"];
-          tableHead += "<tr>";
-          for (var i in columns) {
-            tableHead += "<th>" + columns[i] + "</th>";
-          }
-          tableHead += "</tr>";
-          $('#documents').append(tableHead);
-        };
-
-        function buildDocumentsTable(documents) {
-
-          $("tr:has(td)").remove();
-
-          var tableContent = "";
-          //    tableContent+=documents;
-          for (var d in documents) {
-            //var doc = JSON.parse(documents[d]);
-            var doc = documents[d];
-            tableContent += "<tr><td>" + doc.name + "</td><td>" + doc.dateCreated + "</td><td>" + doc.creator.name + "</td></tr>";
-          }
-          $('#documents').append(tableContent);
-        };
-
-        $(document).ready(function() {
-          buildTableHeader();
-          getSections();
-
-          $("#addDocumentBtn").on("click", onAddDocumentBtnClick);
-          $("#searchBtn").on("click", onSearchBtnClick);
-          $("#section").on("change", onSectionChange);
-        });
-      })();
-
-    </script>
-</head>
-
-<body>
-<label for="section">
-	Выберите тип</label>
-<select name="section" id="section"></select>
-<input id="addDocumentBtn" type="button" value="Прикрепить" />
-<div class="Search">
-	<input type="text" id="searchField">
-	<input id="searchBtn" type="button" value="Найти" />
-</div>
-<table id="documents" border='1'></table>
-</body>
-
+					$(document).on("keypress", function(){
+						if(event.charCode === 13 && event.srcElement.id != "loginBtn")
+							onLoginBtnClick();
+					});
+				});
+			})();
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<input id="login" type="text" placeholder="Введите логин" />
+			<input id="password" type="password" placeholder="Введите пароль" />
+			<input id="loginBtn" type="button" value="Вход" />
+			<input id="toRegBtn" type="button" value="Регистрация" />
+		</div>
+	</body>
 </html>
