@@ -1,5 +1,6 @@
 package server.entities;
 
+
 public class IdentName {
 	private String ident;
 	private String name;
