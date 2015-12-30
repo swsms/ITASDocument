@@ -16,6 +16,10 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import server.entities.UserEntity;
+import server.services.DocumentService;
+import server.services.UserService;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -24,6 +28,14 @@ import com.sun.jersey.multipart.file.FileDataBodyPart;
 
 public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = -4925536353994142598L;
+
+	private final UserService userService;
+	private final DocumentService docService;
+
+	public UploadServlet(UserService userService, DocumentService docService) {
+		this.userService = userService;
+		this.docService = docService;
+	}
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -47,17 +59,24 @@ public class UploadServlet extends HttpServlet {
 		ClientResponse uploadResponse = uploadResource.type(
 				MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class,
 				multiPart);
-		if (fileToUpload != null)
-			fileToUpload.delete();
 		if (uploadResponse.getStatus() == Response.Status.OK.getStatusCode()) {
 			resp.setContentType("text/plain");
 			resp.setStatus(HttpServletResponse.SC_OK);
-			resp.getWriter().println(uploadResponse.getEntity(String.class));
-			Logger.getLogger(
-					"Warehouse upload response : " + this.getClass().getName())
-					.info(uploadResponse.toString());
+			String ident = uploadResponse.getEntity(String.class);
+			resp.getWriter().println(ident);
+			saveDocument(ident, fileToUpload == null ? "Empty file"
+					: fileToUpload.getName(), req.getParameter("typeName"), req
+					.getSession().getId());
 		} else
 			resp.setStatus(uploadResponse.getStatus());
+		if (fileToUpload != null)
+			fileToUpload.delete();
+	}
+
+	private void saveDocument(String ident, String fileName, String typeName,
+			String sessionId) {
+		UserEntity author = userService.getUserBySessionId(sessionId);
+		docService.add(fileName, ident, typeName, author);
 	}
 
 	private File file(HttpServletRequest req) throws FileUploadException,

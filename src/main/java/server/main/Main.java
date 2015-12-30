@@ -28,7 +28,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		Configuration configuration = Configurations
-				.getPostGresConfigurationLocal();
+				.getPostGresConfigurationRemote();
 		SessionFactory sessionFactory = Configurations
 				.createSessionFactory(configuration);
 
@@ -45,13 +45,13 @@ public class Main {
 		context.addServlet(new ServletHolder(new SignOutServlet(userService)),
 				"/signout");
 
-		context.addServlet(
-				new ServletHolder(new DocumentServlet(documService, userService)),
-				"/documents");
+		context.addServlet(new ServletHolder(new DocumentServlet(documService,
+				userService)), "/documents");
 		context.addServlet(new ServletHolder(new TypeServlet(typeService)),
 				"/types");
 
-		context.addServlet(new ServletHolder(new UploadServlet()), "/putFile");
+		context.addServlet(new ServletHolder(new UploadServlet(userService,
+				documService)), "/putFile");
 		context.addServlet(new ServletHolder(new DownloadServlet()), "/getFile");
 
 		ResourceHandler resource_handler = new ResourceHandler();
