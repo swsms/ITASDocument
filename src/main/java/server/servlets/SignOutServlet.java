@@ -10,7 +10,6 @@ import java.io.IOException;
 public class SignOutServlet extends HttpServlet {
 
     private final UserService userService;
-    private final String USER_SESSION_ATTRIBUTE = "USER";
 
     public SignOutServlet(UserService service) {
         this.userService = service;
