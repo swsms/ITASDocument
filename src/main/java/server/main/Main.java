@@ -21,43 +21,50 @@ import server.servlets.SignOutServlet;
 import server.servlets.SignUpServlet;
 import server.servlets.TypeServlet;
 import server.warehouse.DownloadServlet;
-import server.warehouse.SearchServlet;
 import server.warehouse.UploadServlet;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 
-        Configuration configuration = Configurations.getPostGresConfigurationLocal();
-        SessionFactory sessionFactory = Configurations.createSessionFactory(configuration);
+		Configuration configuration = Configurations
+				.getPostGresConfigurationLocal();
+		SessionFactory sessionFactory = Configurations
+				.createSessionFactory(configuration);
 
-        UserService userService = new UserServiceImpl(sessionFactory);
-        DocumentService documService = new DocumentServiceImpl(sessionFactory);
-        TypeService typeService = new TypeServiceImpl(sessionFactory);
+		UserService userService = new UserServiceImpl(sessionFactory);
+		DocumentService documService = new DocumentServiceImpl(sessionFactory);
+		TypeService typeService = new TypeServiceImpl(sessionFactory);
 
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(new SignInServlet(userService)), "/signin");
-        context.addServlet(new ServletHolder(new SignUpServlet(userService)), "/signup");
-        context.addServlet(new ServletHolder(new SignOutServlet(userService)), "/signout");
+		ServletContextHandler context = new ServletContextHandler(
+				ServletContextHandler.SESSIONS);
+		context.addServlet(new ServletHolder(new SignInServlet(userService)),
+				"/signin");
+		context.addServlet(new ServletHolder(new SignUpServlet(userService)),
+				"/signup");
+		context.addServlet(new ServletHolder(new SignOutServlet(userService)),
+				"/signout");
 
-        context.addServlet(new ServletHolder(new DocumentServlet(documService)), "/documents");
-        context.addServlet(new ServletHolder(new TypeServlet(typeService)), "/types");
-        
-        context.addServlet(new ServletHolder(new UploadServlet()), "/putFile");
-        context.addServlet(new ServletHolder(new DownloadServlet()), "/getFile");
-        context.addServlet(new ServletHolder(new SearchServlet()), "/findFile");
+		context.addServlet(
+				new ServletHolder(new DocumentServlet(documService)),
+				"/documents");
+		context.addServlet(new ServletHolder(new TypeServlet(typeService)),
+				"/types");
 
-        ResourceHandler resource_handler = new ResourceHandler();
-        resource_handler.setResourceBase("frontend");
+		context.addServlet(new ServletHolder(new UploadServlet()), "/putFile");
+		context.addServlet(new ServletHolder(new DownloadServlet()), "/getFile");
 
-        HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[]{resource_handler, context});
+		ResourceHandler resource_handler = new ResourceHandler();
+		resource_handler.setResourceBase("frontend");
 
-        Server server = new Server(8080);
-        server.setHandler(handlers);
+		HandlerList handlers = new HandlerList();
+		handlers.setHandlers(new Handler[] { resource_handler, context });
 
-        server.start();
+		Server server = new Server(8080);
+		server.setHandler(handlers);
 
-        server.join();
-    }
+		server.start();
+
+		server.join();
+	}
 }

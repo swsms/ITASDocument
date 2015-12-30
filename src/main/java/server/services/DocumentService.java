@@ -1,18 +1,22 @@
 package server.services;
 
-import server.entities.DocumentEntity;
-
+import java.io.IOException;
 import java.util.List;
+
+import server.entities.DocumentEntity;
 
 public interface DocumentService {
 
-    DocumentEntity find(String content);
+	DocumentEntity find(String content);
 
-    Long add(DocumentEntity document);
+	Long add(DocumentEntity document);
 
-    Boolean remove(Long id);
+	Boolean remove(Long id);
 
-    Boolean remove(DocumentEntity document);
+	Boolean remove(DocumentEntity document);
 
-    List<DocumentEntity> getDocumentsByTypeName(String docTypeName);
+	List<DocumentEntity> getDocumentsByTypeName(String docTypeName);
+
+	List<DocumentEntity> getDocumentsByTypeNameAndContent(String docTypeName,
+			String content) throws IOException;
 }
