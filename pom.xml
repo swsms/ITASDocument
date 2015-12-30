@@ -96,7 +96,7 @@
 					<appendAssemblyId>false</appendAssemblyId>
 					<archive>
 						<manifest>
-							<mainClass>main.Main</mainClass>
+							<mainClass>server.main.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
