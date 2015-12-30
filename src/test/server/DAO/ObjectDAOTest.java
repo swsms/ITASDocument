@@ -1,5 +1,6 @@
 package server.DAO;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -60,6 +61,9 @@ public class ObjectDAOTest {
 
         Long id = 1L;
         DocumentEntity documentEntity = objectDAO.getOne(DocumentEntity.class, id);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String documJSON = mapper.writeValueAsString(documentEntity);
 
         assertTrue(documentEntity != null);
         assertEquals(id, documentEntity.getId());
