@@ -40,8 +40,6 @@ public class SignInServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        System.out.println("YEAH!");
-
         String sessionId = req.getSession().getId();
         UserEntity profile = userService.getUserBySessionId(sessionId);
 
