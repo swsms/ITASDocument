@@ -8,8 +8,21 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import server.services.*;
-import server.servlets.*;
+
+import server.services.DocumentService;
+import server.services.DocumentServiceImpl;
+import server.services.TypeService;
+import server.services.TypeServiceImpl;
+import server.services.UserService;
+import server.services.UserServiceImpl;
+import server.servlets.DocumentServlet;
+import server.servlets.SignInServlet;
+import server.servlets.SignOutServlet;
+import server.servlets.SignUpServlet;
+import server.servlets.TypeServlet;
+import server.warehouse.DownloadServlet;
+import server.warehouse.SearchServlet;
+import server.warehouse.UploadServlet;
 
 public class Main {
 
@@ -29,6 +42,10 @@ public class Main {
 
         context.addServlet(new ServletHolder(new DocumentServlet(documService)), "/documents");
         context.addServlet(new ServletHolder(new TypeServlet(typeService)), "/types");
+        
+        context.addServlet(new ServletHolder(new UploadServlet()), "/putFile");
+        context.addServlet(new ServletHolder(new DownloadServlet()), "/getFile");
+        context.addServlet(new ServletHolder(new SearchServlet()), "/findFile");
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setResourceBase("frontend");

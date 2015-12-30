@@ -57,7 +57,7 @@ public class UploadServlet extends HttpServlet {
 					"Warehouse upload response : " + this.getClass().getName())
 					.info(uploadResponse.toString());
 		} else
-			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			resp.setStatus(uploadResponse.getStatus());
 	}
 
 	private File file(HttpServletRequest req) throws FileUploadException,
