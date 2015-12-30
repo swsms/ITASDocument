@@ -18,13 +18,20 @@
   <script>
       (function() {
         function getSections() {
-          var sections = ["asdasd"];
-          //    var jsonTypes=[{"id":7,"name":"Криминал","dateCreated":"2015-11-11","creator":{"id":9,"name":"Лютый","login":"banit","password":"50418a6567fdfa9d19e97a0d8f303e7fa9ad859dd8621aa1a6c0360cdbff9795"}},{"id":6,"name":"Экономика","dateCreated":"2015-11-11","creator":{"id":9,"name":"Лютый","login":"banit","password":"50418a6567fdfa9d19e97a0d8f303e7fa9ad859dd8621aa1a6c0360cdbff9795"}}];
-          $.getJSON("/types", function(jsonTypes) {
-
-            for (var i in jsonTypes)
-              sections.push(jsonTypes[i].name);
-          });
+          var sections = (function() {
+            var json = [];
+            $.ajax({
+              'async': false,
+              'global': false,
+              'url': "/types",
+              'dataType': "json",
+              'success': function(jsonTypes) {
+                for (var i in jsonTypes)
+                  json.push(jsonTypes[i].name);
+              }
+            });
+            return json;
+          })();
 
           buildSections(sections);
         };
@@ -50,15 +57,28 @@
 
         function onSearchBtnClick() {
           var text = $("#searchField").val();
-          alert("search: " + text);
+          var searchDocuments = (function() {
+            var json = [];
+            $.ajax({
+              'async': false,
+              'global': false,
+              'url': "/search?text=" + text,
+              'dataType': "json",
+              'success': function(jsonDocs) {
+                for (var i in jsonDocs)
+                  json.push(jsonDocs[i]);
+              }
+            });
+            return json;
+          })();
+
+          buildDocumentsTable(searchDocuments);
         };
 
         function getDocuments(section) {
-
           $.getJSON("/documents?type=" + section, function(jsonDocuments) {
             buildDocumentsTable(jsonDocuments);
           });
-
         };
 
         function buildTableHeader() {
@@ -77,7 +97,6 @@
           $("tr:has(td)").remove();
 
           var tableContent = "";
-          //    tableContent+=documents;
           for (var d in documents) {
             //var doc = JSON.parse(documents[d]);
             var doc = documents[d];
@@ -109,6 +128,17 @@
   <input id="searchBtn" type="button" value="Найти" />
 </div>
 <table id="documents" border='1'></table>
+
+<!--  Надо сделать модальное окно
+
+<form action="putFile" method="post" enctype="multipart/form-data">
+  <input type="file" name="file" size="50" />
+  <br />
+  <input type="submit" value="Upload File" />
+</form>
+
+-->
+
 </body>
 
 </html>

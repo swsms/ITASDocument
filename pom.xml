@@ -51,12 +51,14 @@
 			<artifactId>jersey-client</artifactId>
 			<version>1.19</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>
 			<artifactId>jersey-multipart</artifactId>
 			<version>1.19</version>
 		</dependency>
 		<dependency>
+
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.3.1</version>
@@ -94,7 +96,7 @@
 					<appendAssemblyId>false</appendAssemblyId>
 					<archive>
 						<manifest>
-							<mainClass>main.Main</mainClass>
+							<mainClass>server.main.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
