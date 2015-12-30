@@ -1,164 +1,207 @@
 ﻿<html>
 
 <head>
-  <meta charset="utf-8">
-  <link href="jquery/jquery-ui.css" rel="stylesheet">
-  <style>
-    #section {
-    width: 200px;
-    }
+<meta charset="utf-8">
+<link href="jquery/jquery-ui.css" rel="stylesheet">
+<style>
+#section {
+	width: 200px;
+}
 
-    .Search {
-    display: block;
-    }
+.Search {
+	display: block;
+}
+</style>
+<script src="jquery/jquery.js"></script>
+<script src="jquery/jquery-ui.js"></script>
 
-  </style>
-  <script src="jquery/jquery.js"></script>
-  <script src="jquery/jquery-ui.js"></script>
-  <script>
-      (function() {
-        function checkLogin(){
-            $.ajax({
-            async: false,
-            type: "POST",
-			url: "/documents",
-			statusCode:{
-			    401: function(response){
-			        window.location.href="./login.html";
-			    }
-			}
-			}).error(function(response){
-				if(response.status != 401)
-				alert("Error!");
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+	(function() {
+		function checkLogin() {
+			$.ajax({
+				async : false,
+				type : "POST",
+				url : "/documents",
+				statusCode : {
+					401 : function(response) {
+						window.location.href = "./login.html";
+					}
+				}
+			}).error(function(response) {
+				if (response.status != 401)
+					alert("Error!");
 			});
-		};
+		}
+		;
 
+		function getSections() {
+			var sections = (function() {
+				var json = [];
+				$.ajax({
+					'async' : false,
+					'global' : false,
+					'url' : "/types",
+					'dataType' : "json",
+					'success' : function(jsonTypes) {
+						for ( var i in jsonTypes)
+							json.push(jsonTypes[i].name);
+					}
+				});
+				return json;
+			})();
 
-        function getSections() {
-          var sections = (function() {
-            var json = [];
-            $.ajax({
-              'async': false,
-              'global': false,
-              'url': "/types",
-              'dataType': "json",
-              'success': function(jsonTypes) {
-                for (var i in jsonTypes)
-                  json.push(jsonTypes[i].name);
-              }
-            });
-            return json;
-          })();
+			buildSections(sections);
+		}
+		;
 
-          buildSections(sections);
-        };
+		function buildSections(array) {
+			var html = "";
+			for ( var i in array) {
+				html += "<option value='" + array[i] + "'>" + array[i]
+						+ "</option>";
+			}
+			$("#section").html(html);
 
-        function buildSections(array) {
-          var html = "";
-          for (var i in array) {
-            html += "<option value='" + array[i] + "'>" + array[i] + "</option>";
-          }
-          $("#section").html(html);
+			if (array.length > 0)
+				getDocuments(array[0]);
+		}
+		;
 
-          if (array.length > 0)
-            getDocuments(array[0]);
-        };
+		function onSectionChange() {
+			getDocuments($("#section").val());
+		}
+		;
 
-        function onSectionChange() {
-          getDocuments($("#section").val());
-        };
+		function onAddDocumentBtnClick() {
+			// 			alert("Add");
+		}
+		;
 
-        function onAddDocumentBtnClick() {
-          alert("Add");
-        };
+		function onSearchBtnClick() {
+			var content = $("#section").val();
+			var text = $("#searchField").val();
+			var searchDocuments = (function() {
+				var json = [];
+				$.ajax({
+					'async' : false,
+					'global' : false,
+					'url' : "/documents?type=" + content + "&content=" + text,
+					'dataType' : "json",
+					'success' : function(jsonDocs) {
+						for ( var i in jsonDocs)
+							json.push(jsonDocs[i]);
+					}
+				});
+				return json;
+			})();
 
-        function onSearchBtnClick() {
-          var content = $("#section").val();
-          var text = $("#searchField").val();
-          var searchDocuments = (function() {
-            var json = [];
-            $.ajax({
-              'async': false,
-              'global': false,
-              'url': "/documents?type=" + content + "&content=" + text,
-              'dataType': "json",
-              'success': function(jsonDocs) {
-                for (var i in jsonDocs)
-                  json.push(jsonDocs[i]);
-              }
-            });
-            return json;
-          })();
+			buildDocumentsTable(searchDocuments);
+		}
+		;
 
-          buildDocumentsTable(searchDocuments);
-        };
+		function getDocuments(section) {
+			var text = $("#searchField").val();
+			$.getJSON("/documents?type=" + section + "&content=" + text,
+					function(jsonDocuments) {
+						buildDocumentsTable(jsonDocuments);
+					});
+		}
+		;
 
-        function getDocuments(section) {
-          var text = $("#searchField").val();
-          $.getJSON("/documents?type=" + section + "&content=" + text, function(jsonDocuments) {
-            buildDocumentsTable(jsonDocuments);
-          });
-        };
+		function buildTableHeader() {
+			var tableHead = "";
+			var columns = [ "Название", "Дата добавления", "Пользователь" ];
+			tableHead += "<tr>";
+			for ( var i in columns) {
+				tableHead += "<th>" + columns[i] + "</th>";
+			}
+			tableHead += "</tr>";
+			$('#documents').append(tableHead);
+		}
+		;
 
-        function buildTableHeader() {
-          var tableHead = "";
-          var columns = ["Название", "Дата добавления", "Пользователь"];
-          tableHead += "<tr>";
-          for (var i in columns) {
-            tableHead += "<th>" + columns[i] + "</th>";
-          }
-          tableHead += "</tr>";
-          $('#documents').append(tableHead);
-        };
+		function buildDocumentsTable(documents) {
 
-        function buildDocumentsTable(documents) {
+			$("tr:has(td)").remove();
 
-          $("tr:has(td)").remove();
+			var tableContent = "";
+			for ( var d in documents) {
+				//var doc = JSON.parse(documents[d]);
+				var doc = documents[d];
+				tableContent += "<tr><td>" + doc.name + "</td><td>"
+						+ doc.dateCreated + "</td><td>" + doc.creator.name
+						+ "</td></tr>";
+			}
+			$('#documents').append(tableContent);
+		}
+		;
 
-          var tableContent = "";
-          for (var d in documents) {
-            //var doc = JSON.parse(documents[d]);
-            var doc = documents[d];
-            tableContent += "<tr><td>" + doc.name + "</td><td>" + doc.dateCreated + "</td><td>" + doc.creator.name + "</td></tr>";
-          }
-          $('#documents').append(tableContent);
-        };
+		$(document).ready(function() {
+			buildTableHeader();
+			getSections();
 
-        $(document).ready(function() {
-          buildTableHeader();
-          getSections();
+			$("#addDocumentBtn").on("click", onAddDocumentBtnClick);
+			$("#searchBtn").on("click", onSearchBtnClick);
+			$("#section").on("change", onSectionChange);
 
-          $("#addDocumentBtn").on("click", onAddDocumentBtnClick);
-          $("#searchBtn").on("click", onSearchBtnClick);
-          $("#section").on("change", onSectionChange);
-        });
+		});
 
-        checkLogin();
-      })();
-
-    </script>
+		checkLogin();
+	})();
+</script>
 </head>
 
 <body>
-<label for="section">
-  Выберите тип</label>
-<select name="section" id="section"></select>
-<input id="addDocumentBtn" type="button" value="Прикрепить" />
-<div class="Search">
-  <input type="text" id="searchField">
-  <input id="searchBtn" type="button" value="Найти" />
-</div>
-<table id="documents" border='1'></table>
+	<label for="section"> Выберите тип</label>
+	<select name="section" id="section"></select>
+	<button id="addDocumentBtn" type="button" class="btn btn-info"
+		data-toggle="modal" data-target="#uploadModal">Прикрепить</button>
 
-<!--  Надо сделать модальное окно
+	<div class="Search">
+		<input type="text" id="searchField"> <input id="searchBtn"
+			type="button" value="Найти" />
+	</div>
+	<table id="documents" border='1'></table>
 
-<form action="putFile" method="post" enctype="multipart/form-data">
-  <input type="file" name="file" size="50" />
-  <br />
-  <input type="submit" value="Upload File" />
-</form>
 
--->
+	<style>
+.hide {
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	width: 1px;
+	height: 1px;
+}
+</style>
+
+	<iframe name="hiddenFrame" class="hide"></iframe>
+	<div id="uploadModal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Прикрепление файла</h4>
+				</div>
+				<div class="modal-body">
+					<form method="post" enctype="multipart/form-data" id="uploadform"
+						action="putFile" target="hiddenFrame" accept-charset="utf-8">
+
+						<input type="file" name="file" size="50" /> <br /> <input
+							type="submit" value="Загрузить" />
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
 
 </body>
 
