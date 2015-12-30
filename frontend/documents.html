@@ -100,14 +100,14 @@
         }
 
 		function onSearchBtnClick() {
-			var content = $("#section").val();
+			var type = $("#section").val();
 			var text = $("#searchField").val();
 			var searchDocuments = (function() {
 				var json = [];
 				$.ajax({
 					'async' : false,
 					'global' : false,
-					'url' : "/documents?type=" + content + "&content=" + text,
+					'url' : "/documents?type=" + type + "&content=" + text,
 					'dataType' : "json",
 					'success' : function(jsonDocs) {
 						for ( var i in jsonDocs)
