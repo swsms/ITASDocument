@@ -5,11 +5,11 @@
 <link href="jquery/jquery-ui.css" rel="stylesheet">
 <style>
 #section {
-	width: 200px;
+	width: 400px;
 }
 
-.Search {
-	display: block;
+#searchField {
+	width: 800px;
 }
 </style>
 <script src="jquery/jquery.js"></script>
@@ -134,7 +134,8 @@
 
 		function buildTableHeader() {
 			var tableHead = "";
-			var columns = [ "Название", "Дата добавления", "Пользователь", "Файл" ];
+			var columns = [ "Название", "Дата добавления", "Пользователь",
+					"Файл" ];
 			tableHead += "<tr>";
 			for ( var i in columns) {
 				tableHead += "<th>" + columns[i] + "</th>";
@@ -154,9 +155,9 @@
 				var doc = documents[d];
 
 				tableContent += "<tr><td>" + doc.name + "</td><td>"
-				+ doc.dateCreated + "</td><td>" + doc.creator.name
-				+ "</td><td><a href='/getFile?ident=" + doc.ident
-				+ "'>Ссылка</a>" + "</td></tr>";
+						+ doc.dateCreated + "</td><td>" + doc.creator.name
+						+ "</td><td><a href='/getFile?ident=" + doc.ident
+						+ "'>Ссылка</a>" + "</td></tr>";
 			}
 			$('#documents').append(tableContent);
 		}
@@ -182,22 +183,45 @@
 </head>
 
 <body>
-	<a href="login.html" id="exit">Выход из системы</a>
-	<hr />
-	<label for="section"> Выберите тип : </label>
-	<select name="section" id="section"></select>
-	<button id="addDocumentBtn" type="button" class="btn btn-info"
-		data-toggle="modal" data-target="#uploadModal">Прикрепить</button>
-	<div class="Search">
-		<label for="searchField">Контент : </label>
-		<input type="text" id="searchField"> <input id="searchBtn"
-			type="button" value="Найти" />
-	</div>
-	<hr />
-	<table id="documents" border='1'></table>
+	<div class="container ">
+		<H2>
+			Хранилище документов <small><a
+				href="https://github.com/swsms/ITASDocument">GitHub</a></small>
+		</H2>
+
+		<a href="login.html" class="btn btn-default btn-xs" id="exit"
+			role="button">Выход из системы</a>
+
+		<hr />
+
+		<h4>Добавление документа</h4>
+		<form class="form-inline">
+			<div class="form-group">
+				<label for="section"> Выберите тип : </label> <select name="section"
+					id="section" class="form-control input-xs"></select>
+				<button id="addDocumentBtn" type="button"
+					class="btn btn-default btn-xs" data-toggle="modal"
+					data-target="#uploadModal">Прикрепить</button>
+			</div>
+			<div class="Search">
+
+				<hr />
+				<h4>Поиск документов</h4>
+				<form class="form-inline">
+					<div class="form-group">
+						<label for="searchField">Контент : </label> <input type="text"
+							id="searchField" class="form-control input-sm">
+					</div>
+
+					<input id="searchBtn" type="button" value="Найти"
+						class="btn btn-default btn-xs" />
+				</form>
+			</div>
+			<hr />
+			<table id="documents" class='table table-hover'></table>
 
 
-	<style>
+			<style>
 .hide {
 	position: absolute;
 	top: -1px;
@@ -207,32 +231,32 @@
 }
 </style>
 
-	<iframe name="hiddenFrame" class="hide"></iframe>
-	<div id="uploadModal" class="modal fade" role="dialog">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Прикрепление файла</h4>
-				</div>
-				<div class="modal-body">
-					<form method="post" enctype="multipart/form-data" id="uploadform"
-						onsubmit="location.reload(); return true;"
-						action="putFile?typeName="
-						.concat($("#section").val()) target="hiddenFrame"
-						accept-charset="utf-8">
+			<iframe name="hiddenFrame" class="hide"></iframe>
+			<div id="uploadModal" class="modal fade" role="dialog">
+				<div class="modal-dialog modal-sm">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Прикрепление файла</h4>
+							<p class="text-warning">После прикрепления файла необходимо
+								обновить страницу, чтобы изменения отобразились в таблице</p>
+						</div>
+						<div class="modal-body">
+							<form method="post" enctype="multipart/form-data" id="uploadform"
+								onsubmit="location.reload(); return true;"
+								action="putFile?typeName="
+								.concat($("#section").val()) target="hiddenFrame"
+								accept-charset="utf-8">
 
-						<input type="file" name="file" size="50" /> <br /> <input
-							type="submit" value="Загрузить" />
-					</form>
+								<input type="file" name="file" size="50" /> <br /> <input
+									type="submit" value="Прикрепить" class="btn btn-default btn-xs" />
+							</form>
+						</div>
+					</div>
+
 				</div>
 			</div>
-
-		</div>
 	</div>
-
-
-
 </body>
 
 </html>
