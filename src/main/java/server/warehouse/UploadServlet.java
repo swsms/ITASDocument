@@ -23,8 +23,11 @@ import server.services.UserService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.file.FileDataBodyPart;
+import com.sun.jersey.multipart.impl.MultiPartWriter;
 
 public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = -4925536353994142598L;
@@ -40,6 +43,8 @@ public class UploadServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		ClientConfig cc = new DefaultClientConfig();
+		cc.getClasses().add(MultiPartWriter.class);
 		Client uploadClient = Client.create();
 		WebResource uploadResource = uploadClient.resource(WarehouseConfig
 				.get().apiRoot());

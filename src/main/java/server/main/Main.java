@@ -1,11 +1,8 @@
 package server.main;
 
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -28,7 +25,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		Configuration configuration = Configurations
-				.getPostGresConfigurationLocal();
+				.getPostGresConfigurationRemote();
 		SessionFactory sessionFactory = Configurations
 				.createSessionFactory(configuration);
 
@@ -36,8 +33,10 @@ public class Main {
 		DocumentService documService = new DocumentServiceImpl(sessionFactory);
 		TypeService typeService = new TypeServiceImpl(sessionFactory);
 
-		ServletContextHandler context = new ServletContextHandler(
-				ServletContextHandler.SESSIONS);
+		Server server = new Server(8888);
+		WebAppContext context = new WebAppContext();
+		context.setServer(server);
+		context.setContextPath("/");
 		context.addServlet(new ServletHolder(new SignInServlet(userService)),
 				"/signin");
 		context.addServlet(new ServletHolder(new SignUpServlet(userService)),
@@ -49,22 +48,14 @@ public class Main {
 				userService)), "/documents");
 		context.addServlet(new ServletHolder(new TypeServlet(typeService)),
 				"/types");
-
+		;
 		context.addServlet(new ServletHolder(new UploadServlet(userService,
 				documService)), "/putFile");
 		context.addServlet(new ServletHolder(new DownloadServlet()), "/getFile");
 
-		ResourceHandler resource_handler = new ResourceHandler();
-		resource_handler.setResourceBase("frontend");
-
-		HandlerList handlers = new HandlerList();
-		handlers.setHandlers(new Handler[] { resource_handler, context });
-
-		Server server = new Server(8080);
-		server.setHandler(handlers);
-
+		context.setResourceBase("frontend");
+		server.setHandler(context);
 		server.start();
-
 		server.join();
 	}
 }
