@@ -101,14 +101,14 @@
         }
 
 		function onSearchBtnClick() {
-			var content = $("#section").val();
+			var type = $("#section").val();
 			var text = $("#searchField").val();
 			var searchDocuments = (function() {
 				var json = [];
 				$.ajax({
 					'async' : false,
 					'global' : false,
-					'url' : "/documents?type=" + content + "&content=" + text,
+					'url' : "/documents?type=" + type + "&content=" + text,
 					'dataType' : "json",
 					'success' : function(jsonDocs) {
 						for ( var i in jsonDocs)
@@ -179,18 +179,18 @@
 </head>
 
 <body>
-    <a href="login.html" id="exit">Выйти</a>
+    <a href="login.html" id="exit">Выход из системы</a>
     <hr/>
-	<label for="section"> Выберите тип</label>
+	<label for="section"> Выберите тип : </label>
 	<select name="section" id="section"></select>
 	<button id="addDocumentBtn" type="button" class="btn btn-info"
 		data-toggle="modal" data-target="#uploadModal">Прикрепить</button>
-
 	<div class="Search">
 		<input type="text" id="searchField"> <input id="searchBtn"
 			type="button" value="Найти" />
 	</div>
-	<table id="documents" border='1'></table>
+	<hr/>
+	<table id="documents"  border='1'></table>
 
 
 	<style>
