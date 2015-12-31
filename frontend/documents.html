@@ -75,6 +75,7 @@
 
 		function onSectionChange() {
 			getDocuments($("#section").val());
+			 $('#uploadform').get(0).setAttribute('action', "putFile?typeName=".concat($("#section").val()));
 		}
 		;
 
@@ -166,6 +167,9 @@
 			$("#searchBtn").on("click", onSearchBtnClick);
 			$("#section").on("change", onSectionChange);
 			$("#exit").on("click", onExitClick);
+			 $('#uploadform').get(0).setAttribute('action', "putFile?typeName=".concat($("#section").val()));
+			 
+			 "uploadModal"
 
 		});
 
@@ -208,8 +212,8 @@
 					<h4 class="modal-title">Прикрепление файла</h4>
 				</div>
 				<div class="modal-body">
-					<form method="post" enctype="multipart/form-data" id="uploadform"
-						action="putFile" target="hiddenFrame" accept-charset="utf-8">
+					<form method="post" enctype="multipart/form-data" id="uploadform" onsubmit="location.reload(); return true;"
+						action="putFile?typeName=".concat($("#section").val()) target="hiddenFrame" accept-charset="utf-8">
 
 						<input type="file" name="file" size="50" /> <br /> <input
 							type="submit" value="Загрузить" />
