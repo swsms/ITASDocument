@@ -75,7 +75,8 @@
 
 		function onSectionChange() {
 			getDocuments($("#section").val());
-			 $('#uploadform').get(0).setAttribute('action', "putFile?typeName=".concat($("#section").val()));
+			$('#uploadform').get(0).setAttribute('action',
+					"putFile?typeName=".concat($("#section").val()));
 		}
 		;
 
@@ -84,8 +85,8 @@
 		}
 		;
 
-        function onExitClick() {
-             $.ajax({
+		function onExitClick() {
+			$.ajax({
 				async : false,
 				type : "GET",
 				url : "/signout",
@@ -98,7 +99,7 @@
 				if (response.status != 401)
 					alert("Error!");
 			});
-        }
+		}
 
 		function onSearchBtnClick() {
 			var type = $("#section").val();
@@ -133,7 +134,7 @@
 
 		function buildTableHeader() {
 			var tableHead = "";
-			var columns = [ "Название", "Дата добавления", "Пользователь" ];
+			var columns = [ "Название", "Дата добавления", "Пользователь", "Файл" ];
 			tableHead += "<tr>";
 			for ( var i in columns) {
 				tableHead += "<th>" + columns[i] + "</th>";
@@ -151,27 +152,29 @@
 			for ( var d in documents) {
 				//var doc = JSON.parse(documents[d]);
 				var doc = documents[d];
+
 				tableContent += "<tr><td>" + doc.name + "</td><td>"
-						+ doc.dateCreated + "</td><td>" + doc.creator.name
-						+ "</td></tr>";
+				+ doc.dateCreated + "</td><td>" + doc.creator.name
+				+ "</td><td><a href='/getFile?ident=" + doc.ident
+				+ "'>Ссылка</a>" + "</td></tr>";
 			}
 			$('#documents').append(tableContent);
 		}
 		;
 
-		$(document).ready(function() {
-			buildTableHeader();
-			getSections();
+		$(document).ready(
+				function() {
+					buildTableHeader();
+					getSections();
 
-			$("#addDocumentBtn").on("click", onAddDocumentBtnClick);
-			$("#searchBtn").on("click", onSearchBtnClick);
-			$("#section").on("change", onSectionChange);
-			$("#exit").on("click", onExitClick);
-			 $('#uploadform').get(0).setAttribute('action', "putFile?typeName=".concat($("#section").val()));
-			 
-			 "uploadModal"
+					$("#addDocumentBtn").on("click", onAddDocumentBtnClick);
+					$("#searchBtn").on("click", onSearchBtnClick);
+					$("#section").on("change", onSectionChange);
+					$("#exit").on("click", onExitClick);
+					$('#uploadform').get(0).setAttribute('action',
+							"putFile?typeName=".concat($("#section").val()));
 
-		});
+				});
 
 		checkLogin();
 	})();
@@ -179,8 +182,8 @@
 </head>
 
 <body>
-    <a href="login.html" id="exit">Выход из системы</a>
-    <hr/>
+	<a href="login.html" id="exit">Выход из системы</a>
+	<hr />
 	<label for="section"> Выберите тип : </label>
 	<select name="section" id="section"></select>
 	<button id="addDocumentBtn" type="button" class="btn btn-info"
@@ -189,8 +192,8 @@
 		<input type="text" id="searchField"> <input id="searchBtn"
 			type="button" value="Найти" />
 	</div>
-	<hr/>
-	<table id="documents"  border='1'></table>
+	<hr />
+	<table id="documents" border='1'></table>
 
 
 	<style>
@@ -212,8 +215,11 @@
 					<h4 class="modal-title">Прикрепление файла</h4>
 				</div>
 				<div class="modal-body">
-					<form method="post" enctype="multipart/form-data" id="uploadform" onsubmit="location.reload(); return true;"
-						action="putFile?typeName=".concat($("#section").val()) target="hiddenFrame" accept-charset="utf-8">
+					<form method="post" enctype="multipart/form-data" id="uploadform"
+						onsubmit="location.reload(); return true;"
+						action="putFile?typeName="
+						.concat($("#section").val()) target="hiddenFrame"
+						accept-charset="utf-8">
 
 						<input type="file" name="file" size="50" /> <br /> <input
 							type="submit" value="Загрузить" />
